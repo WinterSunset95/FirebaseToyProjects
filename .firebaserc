@@ -1,0 +1,21 @@
+{
+  "projects": {
+    "default": "winter-f3cb5"
+  },
+  "targets": {
+    "winter-f3cb5": {
+      "hosting": {
+        "star_store": [
+          "star-official-store"
+        ],
+        "chat-um": [
+          "chat-um"
+        ],
+        "expense-tracker": [
+          "expense-tracker-winter"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

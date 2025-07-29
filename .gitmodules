@@ -1,0 +1,9 @@
+[submodule "chat-um"]
+	path = chat-um
+	url = https://github.com/WinterSunset95/chat-um
+[submodule "expense-tracker"]
+	path = expense-tracker
+	url = https://github.com/WinterSunset95/expense-tracker
+[submodule "star_store"]
+	path = star_store
+	url = https://github.com/Jailson300/star_store
