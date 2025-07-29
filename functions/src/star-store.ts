@@ -24,7 +24,7 @@ const chatId = defineSecret("TELEGRAM_CHAT_ID");
 const db = getFirestore();
 
 export const createStarStoreOrder = onCall({
-	cors: ["http://localhost", "https://jailson300.github.io", "https://star-store.web.app", "*"],
+	cors: ["http://localhost", "https://jailson300.github.io", "https://star-official-store.web.app", "*"],
 	secrets: [keyId, keySecret],
 }, async (request) => {
 	const instance = new Razorpay({
@@ -54,7 +54,7 @@ export const createStarStoreOrder = onCall({
 })
 
 export const sendOrderNotification = onCall({
-	cors: ["http://localhost", "https://jailson300.github.io", "https://star-store.web.app", "*"],
+	cors: ["http://localhost", "https://jailson300.github.io", "https://star-official-store.web.app", "*"],
 	secrets: [keySecret, botToken, chatId],
 }, async (request: CallableRequest<any>) => {
 	console.log(request.data);
@@ -169,7 +169,7 @@ export const sendOrderNotification = onCall({
 })
 
 export const recieveTelegramCallback = onRequest({
-	cors: ["http://localhost", "https://jailson300.github.io", "https://star-store.web.app", "*"],
+	cors: ["http://localhost", "https://jailson300.github.io", "https://star-official-store.web.app", "*"],
 	secrets: [botToken, chatId],
 }, async (req, res) => {
 	if (!botToken || !chatId) {
@@ -274,7 +274,7 @@ export const recieveTelegramCallback = onRequest({
 })
 
 export const telegramWebhookForwarder = onRequest({
-	cors: ["http://localhost", "https://jailson300.github.io", "https://star-store.web.app", "*"],
+	cors: ["http://localhost", "https://jailson300.github.io", "https://star-official-store.web.app", "*"],
 }, async (req, res) => {
 	const prodUrl = "https://us-central1-winter-f3cb5.cloudfunctions.net/recieveTelegramCallback";
 	const devUrl = "https://aware-thoroughly-goldfish.ngrok-free.app/winter-f3cb5/us-central1/recieveTelegramCallback";

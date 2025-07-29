@@ -14,7 +14,8 @@ import { getFirestore } from "firebase-admin/firestore";
 
 exports.userCreated = user().onCreate(async (user) => {
 	logger.info("New user created", { })
-	const writeResult = await getFirestore().collection("tenants").doc("chat-um-bhulo").collection("users").doc(user.uid).set({
+	console.log(user.tenantId)
+	const writeResult = await getFirestore().collection("tenants").doc(user.tenantId ?? "chat-um-bhulo").collection("users").doc(user.uid).set({
 		uid: user.uid,
 		email: user.email,
 		photoURL: user.photoURL,
@@ -53,7 +54,7 @@ exports.userCreated = user().onCreate(async (user) => {
 
 exports.userDeleted = user().onDelete(async (user) => {
 	logger.info("User deleted", { })
-	const writeResult = await getFirestore().collection("tenants").doc("chat-um-bhulo").collection("users").doc(user.uid).delete()
+	const writeResult = await getFirestore().collection("tenants").doc(user.tenantId ?? "chat-um-bhulo").collection("users").doc(user.uid).delete()
 	if (!writeResult) {
 		logger.error("Error deleting user", {
 			structuredData: true,
