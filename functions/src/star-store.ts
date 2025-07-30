@@ -118,7 +118,7 @@ export const sendOrderNotification = onCall({
 			uuid: userAuthId,
 			timestamp: FieldValue.serverTimestamp(),
 		}
-		const firestoreRes = await db.collection("tenants").doc("star-store").collection("orders").doc(request.data.razorpay_order_id).set(data);
+		const firestoreRes = await db.collection("tenants").doc("star-store-lhgmd").collection("orders").doc(request.data.razorpay_order_id).set(data);
 
 		if (!firestoreRes) {
 			console.error("Error adding to firestore:", firestoreRes);
@@ -201,7 +201,7 @@ export const recieveTelegramCallback = onRequest({
 	const orderId = recievedInfo.split("-")[1];
 
 	// Get the firestore document in order to craft a proper response
-	const docRef = db.collection("tenants").doc("star-store").collection("orders").doc(orderId);
+	const docRef = db.collection("tenants").doc("star-store-lhgmd").collection("orders").doc(orderId);
 	const docSnap = await docRef.get();
 	if (!docSnap.exists) {
 		console.error("No such document!");
@@ -240,7 +240,7 @@ export const recieveTelegramCallback = onRequest({
 	`;
 
 	if (confirmOrReject == "confirm") {
-		db.collection("tenants").doc("star-store").collection("orders").doc(orderId).update({
+		db.collection("tenants").doc("star-store-lhgmd").collection("orders").doc(orderId).update({
 			status: "done"
 		}).then(() => {
 			const updateTextUrl = `https://api.telegram.org/bot${botToken.value()}/editMessageText`;
@@ -253,7 +253,7 @@ export const recieveTelegramCallback = onRequest({
 			})
 		})
 	} else if (confirmOrReject == "reject") {
-		db.collection("tenants").doc("star-store").collection("orders").doc(orderId).update({
+		db.collection("tenants").doc("star-store-lhgmd").collection("orders").doc(orderId).update({
 			status: "rejected"
 		}).then(() => {
 			const updateTextUrl = `https://api.telegram.org/bot${botToken.value()}/editMessageText`;
