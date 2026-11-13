@@ -7,3 +7,6 @@
 [submodule "star_store"]
 	path = star_store
 	url = https://github.com/Jailson300/star_store
+[submodule "codenest_store"]
+	path = codenest_store
+	url = https://github.com/WinterSunset95/codenest_store
