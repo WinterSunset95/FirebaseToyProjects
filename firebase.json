@@ -1,11 +1,12 @@
 {
   "firestore": {
+    "database": "(default)",
+    "location": "asia-south2",
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
   "functions": [
     {
-      "source": "functions",
       "codebase": "default",
       "ignore": [
         "node_modules",
@@ -16,46 +17,65 @@
       ],
       "predeploy": [
         "npm --prefix \"$RESOURCE_DIR\" run build"
-      ]
+      ],
+      "source": "functions"
     }
   ],
   "hosting": [
-	  {
-		  "target": "star_store",
-		  "public": "star_store/dist",
-		  "ignore": [
-			  "firebase.json",
-			  "**/.*",
-			  "**/node_modules/**"
-		  ],
-		  "predeploy": [
-			  "npm --prefix star_store run build"
-		  ]
-	  },
-	  {
-		  "target": "chat-um",
-		  "public": "chat-um/.next",
-		  "ignore": [
-			  "firebase.json",
-			  "**/.*",
-			  "**/node_modules/**"
-		  ],
-		  "predeploy": [
-			  "npm --prefix chat-um run build"
-		  ]
-	  },
-	  {
-		  "target": "expense-tracker",
-		  "public": "expense-tracker/.next",
-		  "ignore": [
-			  "firebase.json",
-			  "**/.*",
-			  "**/node_modules/**"
-		  ],
-		  "predeploy": [
-			  "npm --prefix expense-tracker run build"
-		  ]
-	  }
+    {
+      "target": "star_store",
+      "public": "star_store/dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "predeploy": [
+        "npm --prefix star_store run build"
+      ]
+    },
+    {
+      "target": "chat-um",
+      "public": "chat-um/.next",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "predeploy": [
+        "npm --prefix chat-um run build"
+      ]
+    },
+    {
+      "target": "expense-tracker",
+      "public": "expense-tracker/.next",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "predeploy": [
+        "npm --prefix expense-tracker run build"
+      ]
+    },
+    {
+      "target": "codenest_store",
+      "public": "codenest_store/build",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "predeploy": [
+        "pnpm --dir codenest_store build"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/200.html"
+        }
+      ]
+    }
   ],
   "storage": {
     "rules": "storage.rules"

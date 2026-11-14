@@ -13,6 +13,9 @@
         ],
         "expense-tracker": [
           "expense-tracker-winter"
+        ],
+        "codenest_store": [
+          "codenest-official-store"
         ]
       }
     }
