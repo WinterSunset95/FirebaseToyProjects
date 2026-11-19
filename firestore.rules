@@ -1,20 +1,69 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
+    match /tenants/codenest-store-vwtom {
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      // allow read, write: if request.time < timestamp.date(2025, 12, 30);
-      allow read, write: if true;
+      function isShopTenant() {
+        return request.auth != null
+          && request.auth.token.firebase.tenant == 'codenest-store-vwtom';
+      }
+
+      function isAdmin() {
+        return isShopTenant()
+          && request.auth.token.firebase.sign_in_provider != 'anonymous'
+          && exists(/databases/$(database)/documents/tenants/codenest-store-vwtom/admins/$(request.auth.uid))
+          && get(/databases/$(database)/documents/tenants/codenest-store-vwtom/admins/$(request.auth.uid)).data.isActive == true;
+      }
+
+      // Allow a signed-in user to read ONLY their own admin doc so the client UI guard works
+      match /admins/{adminId} {
+        allow read: if isShopTenant() && request.auth.uid == adminId;
+        allow write: if false;
+      }
+
+      match /config/{docId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+      match /games/{gameSlug} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+      match /events/{eventId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+      match /skus/{skuId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+      match /sku_secrets/{skuId} {
+        allow read, write: if isAdmin();
+      }
+
+      match /used_utrs/{utr} {
+        allow create: if isShopTenant()
+          && utr.matches('^[0-9]{12}$')
+          && request.resource.data.userId == request.auth.uid;
+        allow read, update, delete: if isAdmin();
+      }
+
+      match /orders/{orderId} {
+        allow read: if isShopTenant()
+          && (resource.data.userId == request.auth.uid || isAdmin());
+
+        allow create: if isShopTenant()
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.status == 'pending_verification'
+          && request.resource.data.fulfillment.claimedBy == null
+          && get(/databases/$(database)/documents/tenants/codenest-store-vwtom/skus/$(request.resource.data.item.skuId)).data.inStock == true
+          && request.resource.data.item.unitPriceInr ==
+             get(/databases/$(database)/documents/tenants/codenest-store-vwtom/skus/$(request.resource.data.item.skuId)).data.sellingPriceInr
+          && request.resource.data.item.totalAmountInr ==
+             request.resource.data.item.unitPriceInr * request.resource.data.item.quantity;
+
+        allow update, delete: if isAdmin();
+      }
     }
   }
 }

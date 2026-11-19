@@ -11,8 +11,8 @@
     in {
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [
-          nodejs_22
-          corepack_22
+          nodejs_24
+          corepack_24
 
           typescript
           svelte-language-server
